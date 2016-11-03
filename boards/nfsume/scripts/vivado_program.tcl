@@ -1,4 +1,4 @@
-set bitfile build/dnskv.bit
+set bitfile build/sume-tmpl.bit
 set device xc7vx690t_0
 
 open_hw

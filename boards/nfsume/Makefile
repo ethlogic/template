@@ -1,4 +1,4 @@
-proj = "dnskv"
+proj = "sume-tmpl"
 
 sim_top = app_tb
 outdir = build

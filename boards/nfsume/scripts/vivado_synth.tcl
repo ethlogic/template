@@ -54,7 +54,7 @@ generate_target {synthesis simulation} [get_ips]
 #set_property steps.phys_opt_design.is_enabled true [get_runs impl_1]
 #set_property strategy Performance_Explore [get_runs impl_1]
 
-synth_design -name dnskv -part ${device} -top top
+synth_design -name sume-tmpl -part ${device} -top top
 
 report_utilization -file ${outdir}/post_syn_util.txt
 report_timing -sort_by group -max_paths 5 -path_type summary -file ${outdir}/post_synth_timing.txt
