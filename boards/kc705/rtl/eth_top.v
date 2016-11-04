@@ -8,8 +8,8 @@ module eth_top (
 
 	inout  wire                I2C_FPGA_SCL,
 	inout  wire                I2C_FPGA_SDA,
-	input  wire                I2C_FPGA_RST_N,
-	input  wire                SI5324_RST_N,
+	output  wire               I2C_FPGA_RST_N,
+	output  wire               SI5324_RST_N,
 
 	// Ether Port 0
 	input  wire                ETH0_TX_P,
@@ -17,14 +17,24 @@ module eth_top (
 	output wire                ETH0_RX_P,
 	output wire                ETH0_RX_N,
 
-	input  wire                ETH0_TX_FAULT,
-	input  wire                ETH0_RX_LOS,
+	//input  wire                ETH0_TX_FAULT,
+	//input  wire                ETH0_RX_LOS,
 	output wire                ETH0_TX_DISABLE
 );
 
 /*
  * Ethernet Clock Domain : Clocking
  */
+wire clk50;			
+reg div_clk50 = 0;
+always @ (posedge clk100)
+		div_clk50 <= ~div_clk50;
+
+BUFG clk50_bufg (
+	.I(div_clk50),
+	.O(clk50)
+);
+
 wire clk156;
 clock_control u_clk_control (
 	.i2c_clk       (I2C_FPGA_SCL),
@@ -32,7 +42,7 @@ clock_control u_clk_control (
 	.i2c_mux_rst_n (I2C_FPGA_RST_N),
 	.si5324_rst_n  (SI5324_RST_N),
 	.rst           (sys_rst),
-	.clk50         (clk100)
+	.clk50         (clk50)
 );
 
 /*
@@ -124,7 +134,7 @@ axi_10g_ethernet_0 u_axi_10g_ethernet_0 (
 	.tx_axis_aresetn             (!eth_rst),        // input wire tx_axis_aresetn
 	.rx_axis_aresetn             (!eth_rst),        // input wire rx_axis_aresetn
 	.tx_ifg_delay                (8'd0),            // input wire [7 : 0] tx_ifg_delay
-	.dclk                        (clk100),          // input wire dclk
+	.dclk                        (clk50),          // input wire dclk
 	.txp                         (ETH0_RX_P),       // output wire txp
 	.txn                         (ETH0_RX_N),       // output wire txn
 	.rxp                         (ETH0_TX_P),       // input wire rxp
@@ -146,7 +156,7 @@ axi_10g_ethernet_0 u_axi_10g_ethernet_0 (
 	.gttxreset_out               (),           // output wire gttxreset_out
 	.gtrxreset_out               (),           // output wire gtrxreset_out
 	.txuserrdy_out               (),           // output wire txuserrdy_out
-	.coreclk_out                 (),           // output wire coreclk_out
+	.coreclk_out                 (clk156),     // output wire coreclk_out
 	.resetdone_out               (),           // output wire resetdone_out
 	.reset_counter_done_out      (),           // output wire reset_counter_done_out
 	.qplllock_out                (),           // output wire qplllock_out
@@ -186,6 +196,13 @@ always @ (posedge clk156)
 		led_cnt <= led_cnt + 32'd1;
 
 assign debug = eth_debug;
+ 
+ila_0 u_ila (
+	.clk(clk156),
+	.probe0(eth_rst)
+);
+
+
 
 endmodule
 

@@ -18,8 +18,6 @@ module top (
 	input  wire ETH0_TX_N,
 	output wire ETH0_RX_P,
 	output wire ETH0_RX_N,
-	input  wire ETH0_TX_FAULT,
-	input  wire ETH0_RX_LOS,
 	output wire ETH0_TX_DISABLE
 );
 
@@ -77,10 +75,9 @@ eth_top u_eth0_top (
 	.I2C_FPGA_RST_N     (I2C_FPGA_RST_N),
 	.SI5324_RST_N       (SI5324_RST_N),
 
-	.ETH0_TX_FAULT      (ETH0_TX_FAULT ),
-	.ETH0_RX_LOS        (ETH0_RX_LOS   ),
 	.ETH0_TX_DISABLE    (ETH0_TX_DISABLE)
 );
+
 
 
 endmodule
