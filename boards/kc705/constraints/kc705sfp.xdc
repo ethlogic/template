@@ -18,7 +18,7 @@ set_property PACKAGE_PIN H2 [get_ports ETH0_RX_P]
 #set_property LOC GTXE2_CHANNEL_X0Y15 [get_cells network_path_inst_1/ten_gig_eth_pcs_pma_inst/inst/*/gtxe2_i]
 
 ## Enable use of VR/VP pins as normal IO 
-set_property DCI_CASCADE {32 34} [get_iobanks 33]
+#set_property DCI_CASCADE {32 34} [get_iobanks 33]
 
 ## SFP TX Disable loc (1 is enable)
 set_property PACKAGE_PIN Y20 [get_ports {ETH0_TX_DISABLE}]
