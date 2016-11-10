@@ -25,9 +25,7 @@ RTL_SRC := rtl/clock_control/clock_control.v \
 
 #VERILATOR_SRC := test/app_tb.cpp
 
-IP_SRC := ip_catalog/axi_10g_ethernet_0/axi_10g_ethernet_0.xci  \
-          ip_catalog/axis_data_fifo_0/axis_data_fifo_0.xci      \
-          ip_catalog/ila_0/ila_0.xci                     
+IP_SRC := ip_catalog/axi_10g_ethernet_0/axi_10g_ethernet_0.xci  
 
 XDC_SRC := constraints/kc705sfp.xdc
 
@@ -79,7 +77,7 @@ load: $(outdir)/$(proj).bit
 
 synth-clean:
 	rm -f fsm_encoding.os usage_stat*
-	rm -rf build .Xil
+	rm -rf build .Xil .srcs
 	rm -rf *.jou *.log *.mif *.hw  *.ip_user_files *.cache  *.sim *.runs *.srcs
 
 sim-clean:
