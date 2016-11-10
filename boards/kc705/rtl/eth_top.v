@@ -197,12 +197,5 @@ always @ (posedge clk156)
 
 assign debug = eth_debug;
  
-ila_0 u_ila (
-	.clk(clk156),
-	.probe0(eth_rst)
-);
-
-
-
 endmodule
 
