@@ -41,12 +41,25 @@ foreach file $RTL_SRC {
 	}
 }
 
+puts "INFO: Create IPs"
+create_ip -name axis_data_fifo -dir ip_catalog/ -vendor xilinx.com -library ip -version 1.1 -module_name axis_data_fifo_0
+set_property -dict [list CONFIG.TDATA_NUM_BYTES {8}\
+                         CONFIG.TUSER_WIDTH {1}  \
+                         CONFIG.FIFO_DEPTH  {16} \
+                         CONFIG.FIFO_MODE   {1}  \
+						 CONFIG.HAS_TREADY  {1}  \
+                         CONFIG.HAS_TKEEP   {1}  \
+						 CONFIG.HAS_TLAST   {1}] [get_ips axis_data_fifo_0]
+generate_target {instantiation_template} [get_files ip_catalog/axis_data_fifo_0/axis_data_fifo_0.xci]
+
 puts "INFO: Import IP Sources ..."
 foreach file $IP_SRC {
 	read_ip $file
 	synth_ip -force [get_files $file]
 #	synth_ip [get_files $file]
 }
+	read_ip ip_catalog/axis_data_fifo_0/axis_data_fifo_0.xci
+	synth_ip -force [get_files ip_catalog/axis_data_fifo_0/axis_data_fifo_0.xci]
 
 generate_target {synthesis simulation} [get_ips]
 
